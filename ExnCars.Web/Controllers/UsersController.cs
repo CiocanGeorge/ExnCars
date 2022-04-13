@@ -41,6 +41,14 @@ namespace ExnCars.Web.Controllers
         }
         public IActionResult Create([FromForm] UserViewModel userViewModel)
         {
+            if(userViewModel==null)
+            {
+                return RedirectToAction("SomethingWentWrong", "Helpers", new { message = "UserViewModel is null" });
+            }
+            if(!ModelState.IsValid)
+            {
+                return View(userViewModel);
+            }
             var userDto = new UserDto
             {
                 FirstName = userViewModel.FirstName,
