@@ -1,5 +1,6 @@
 using ExnCars.Data;
 using ExnCars.Services.UserServices;
+using ExnCars.Services.Brands;
 using ExnCars.Web.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,10 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ExnCars.Web
 {
@@ -28,6 +25,7 @@ namespace ExnCars.Web
         {
             services.AddControllersWithViews();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBrandService, BrandService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<DbContext, ExnCarsContext>();
