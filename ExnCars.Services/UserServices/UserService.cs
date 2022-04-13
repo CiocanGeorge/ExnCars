@@ -88,14 +88,18 @@ namespace ExnCars.Services.UserServices
 
         public UserDto GetUserById(int id)
         {
+            if (id < 1) throw new ArgumentException(nameof(id));
+
             var user= userRepository.GetById(id);
-            UserDto userDto = new UserDto {
+            if (user == null) return null;
+
+            return new UserDto
+            {
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ID = user.ID
             };
-            return userDto;
         }
 
         public void Delete(UserDto user)

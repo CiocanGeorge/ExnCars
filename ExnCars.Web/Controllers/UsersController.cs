@@ -54,19 +54,34 @@ namespace ExnCars.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var user = userService.GetUserById(id);
+            if(id<1)
+            {
+                return RedirectToAction("SomethingWentWrong", "Helpers", new { message = "User's ID is negative!" });
+            }
+
+            var userDto = userService.GetUserById(id);
+            if (userDto == null) 
+            {
+                return RedirectToAction("NotFound", "Helpers", new { message = "User could not be retrieved!" });
+            }
+
             var userViewModel = new UserViewModel
             {
-                ID = user.ID,
-                LastName = user.LastName,
-                FirstName = user.FirstName,
-                Email = user.Email
+                ID = userDto.ID,
+                LastName = userDto.LastName,
+                FirstName = userDto.FirstName,
+                Email = userDto.Email
             };
+
             return View(userViewModel);
         }
-
+        [HttpPost]
         public IActionResult Edit([FromForm] UserViewModel userViewModel)
         {
+            if(userViewModel==null)
+            {
+                return RedirectToAction("SomethingWentWrong", "Helpers", new { message = "UserViewModel is null!" });
+            }
             var userDto = new UserDto
             {
                 Email = userViewModel.Email,
@@ -75,7 +90,7 @@ namespace ExnCars.Web.Controllers
                 LastName = userViewModel.LastName
             };
             userService.UpdateUser(userDto);
-            return RedirectToAction("Index", "Users");
+            return RedirectToAction("Index");
 
         }
         [HttpGet]
