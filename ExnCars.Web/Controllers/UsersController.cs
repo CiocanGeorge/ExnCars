@@ -19,6 +19,7 @@ namespace ExnCars.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            
             var userDtos = userService.GetUsers() ?? new List<UserDto>();
 
             var userViewModels = userDtos?.Select(x => new UserViewModel
@@ -28,6 +29,8 @@ namespace ExnCars.Web.Controllers
                 FirstName = x.FirstName,
                 LastName = x.LastName
             }).ToList();
+
+            ViewBag.YourName = "Admin";
 
             return View(userViewModels);
         }
