@@ -3,6 +3,7 @@ using ExnCars.Services.UserServices.Dto;
 using ExnCars.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExnCars.Web.Controllers
 {
@@ -18,21 +19,15 @@ namespace ExnCars.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var users = userService.GetUsers();
+            var userDtos = userService.GetUsers() ?? new List<UserDto>();
 
-            var userViewModels = new List<UserViewModel>();
-
-            foreach (var user in users)
+            var userViewModels = userDtos?.Select(x => new UserViewModel
             {
-                var userViewModel = new UserViewModel
-                {
-                    ID = user.ID,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                };
-                userViewModels.Add(userViewModel);
-            }
+                ID = x.ID,
+                Email = x.Email,
+                FirstName = x.FirstName,
+                LastName = x.LastName
+            }).ToList();
 
             return View(userViewModels);
         }
