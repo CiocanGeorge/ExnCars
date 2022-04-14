@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace ExnCars.Web.Models
         public string LastName { get; set; }
         [EmailAddress(ErrorMessage ="Invalide email")]
         public string Email { get; set; }
+        public IFormFile Avatar { get; set; }
     }
 }

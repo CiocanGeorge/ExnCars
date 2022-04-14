@@ -2,7 +2,10 @@
 using ExnCars.Services.UserServices.Dto;
 using ExnCars.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ExnCars.Web.Controllers
@@ -10,11 +13,13 @@ namespace ExnCars.Web.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService userService;
+        private readonly IHostEnvironment hostEnviroment;
 
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IHostEnvironment hostEnviroment)
         {
             this.userService = userService;
+            this.hostEnviroment = hostEnviroment;
         }
         [HttpGet]
         public IActionResult Index()
@@ -49,6 +54,17 @@ namespace ExnCars.Web.Controllers
             {
                 return View(userViewModel);
             }
+
+            var avatarFileName = $"{Guid.NewGuid().ToString("N")}-{userViewModel.Avatar.FileName}";
+            var webProjectPath = hostEnviroment.ContentRootPath;
+            var avatarPath = Path.Combine(webProjectPath, avatarFileName);
+
+            using(var stream=System.IO.File.Create(avatarPath))
+            {
+                userViewModel.Avatar.CopyTo(stream);
+            }
+
+
             var userDto = new UserDto
             {
                 FirstName = userViewModel.FirstName,
