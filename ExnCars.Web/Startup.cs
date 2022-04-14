@@ -24,6 +24,7 @@ namespace ExnCars.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllersWithViews();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
@@ -33,7 +34,7 @@ namespace ExnCars.Web
             services.AddScoped<DbContext, ExnCarsContext>();
             services.AddDbContext<ExnCarsContext>(options=>
             {
-                options.UseSqlServer(@"Data Source=DESKTOP-FU828I7\MSSQLSERVER01;Initial Catalog=ExnCars;Integrated Security=True");
+                options.UseSqlServer(Configuration.GetConnectionString("ExnCars"));
             });
         }
 
