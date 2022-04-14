@@ -1,17 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ExnCars.Data.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace ExnCars.Web.Models
+namespace ExnCars.Services.Models.Dto
 {
-    public class CreateModelViewModel
+    public class ModelDto
     {
+        public int ID { get; set; }
         public string Name { get; set; }
         public string FuelType { get; set; }
         public int EngineDisplacement { get; set; }
-        public int? SelectedBrandID { get; set; }
-        public List<SelectListItem> Brands { get; set; }
+        public int BrandID { get; set; }
     }
 }

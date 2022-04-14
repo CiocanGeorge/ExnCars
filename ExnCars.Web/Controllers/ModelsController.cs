@@ -1,5 +1,7 @@
 ﻿using ExnCars.Services.Brands;
 using ExnCars.Services.Brands.Dto;
+using ExnCars.Services.Models;
+using ExnCars.Services.Models.Dto;
 using ExnCars.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,9 +15,11 @@ namespace ExnCars.Web.Controllers
     public class ModelsController : Controller
     {
         private readonly IBrandService brandService;
-        public ModelsController(IBrandService brandService)
+        private readonly IModelService modelService;
+        public ModelsController(IBrandService brandService, IModelService modelService)
         {
             this.brandService = brandService;
+            this.modelService = modelService;
         }
         [HttpGet]
         public IActionResult Create()
@@ -37,6 +41,15 @@ namespace ExnCars.Web.Controllers
         [HttpPost]
         public IActionResult Create([FromForm]CreateModelViewModel createModelViewModel)
         {
+            var modelDto = new ModelDto
+            {
+                Name = createModelViewModel.Name,
+                FuelType = createModelViewModel.FuelType,
+                EngineDisplacement = createModelViewModel.EngineDisplacement,
+                BrandID = createModelViewModel.SelectedBrandID.Value
+
+            };
+            modelService.CreateModel(modelDto);
             return RedirectToAction("Index", "Users");
         }
     }
